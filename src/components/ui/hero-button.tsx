@@ -2,6 +2,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Box } from "lucide-react";
 
 export interface HeroButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -16,7 +17,7 @@ export const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
       connect:
         "bg-[#00BF60] text-white text-base px-6 py-2 rounded-full hover:bg-[#00AB56]",
       redeem:
-        "bg-[rgba(35,35,36,1)] border text-white text-base px-6 py-2 rounded-[20px] border-[rgba(228,228,228,1)] border-solid hover:bg-[rgba(50,50,51,1)]",
+        "bg-[rgba(35,35,36,1)] border text-white text-base px-6 py-2 rounded-[20px] border-[rgba(228,228,228,1)] border-solid hover:bg-[rgba(50,50,51,1)] flex items-center gap-2",
     };
 
     return (
@@ -25,6 +26,7 @@ export const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
         ref={ref}
         {...props}
       >
+        {variant === "redeem" && <Box className="w-5 h-5" />}
         {children}
       </Button>
     );
