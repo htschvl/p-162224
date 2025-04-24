@@ -18,9 +18,9 @@ export function HeroSection() {
   }, [inputValue]);
 
   return (
-    <main className="font-bold whitespace-nowrap">
+    <main className="font-bold text-center"> {/* Added text-center to ensure text centralization */}
       <section className="bg-[rgba(19,20,21,1)] w-full flex flex-col pt-[17px] pb-[364px] max-md:max-w-full max-md:pb-[100px] relative">
-        <div className="absolute top-5 right-5">
+        <div className="absolute top-5 right-5 text-center">
           <HeroButton 
             variant="connect" 
             onClick={handleConnect} 
@@ -43,7 +43,7 @@ export function HeroSection() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Digite seu código"
-            className="w-[332px] h-[58px] text-lg rounded-[20px] bg-[rgba(35,35,36,1)] border-[rgba(228,228,228,1)] text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00BF60]"
+            className="w-[332px] h-[58px] text-lg rounded-[20px] bg-[rgba(35,35,36,1)] border-[rgba(228,228,228,1)] text-white placeholder-gray-400 text-center focus:ring-2 focus:ring-[#00BF60]"
           />
 
           <form onSubmit={handleRedeem}>
