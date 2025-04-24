@@ -1,13 +1,9 @@
 
 import * as React from "react";
 import { HeroButton } from "@/components/ui/hero-button";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export function HeroSection() {
-  const handleConnect = React.useCallback(() => {
-    // Handle connection logic
-    console.log("Connecting...");
-  }, []);
-
   const handleRedeem = React.useCallback(() => {
     // Handle redemption logic
     console.log("Redeeming...");
@@ -17,13 +13,17 @@ export function HeroSection() {
     <main className="font-bold whitespace-nowrap">
       <section className="bg-[rgba(19,20,21,1)] w-full flex flex-col pt-[17px] pb-[364px] max-md:max-w-full max-md:pb-[100px] relative">
         <div className="absolute top-5 right-5">
-          <HeroButton 
-            variant="connect" 
-            onClick={handleConnect} 
-            aria-label="Connect to service"
-          >
-            Conectar
-          </HeroButton>
+          <ConnectButton.Custom>
+            {({ openConnectModal }) => (
+              <HeroButton 
+                variant="connect" 
+                onClick={openConnectModal}
+                aria-label="Connect to service"
+              >
+                Conectar
+              </HeroButton>
+            )}
+          </ConnectButton.Custom>
         </div>
 
         <div className="flex justify-center mt-32">
