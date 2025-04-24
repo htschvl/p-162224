@@ -10,6 +10,13 @@ import { WagmiConfig, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+// Define your project ID - replace with your actual WalletConnect project ID
+// Get one from https://cloud.walletconnect.com
+const projectId = 'YOUR_PROJECT_ID';
+
+// Define chains
+const chains = [mainnet];
+
 // Create a custom wallet list
 const wallets = [
   metaMaskWallet,
@@ -17,13 +24,13 @@ const wallets = [
   walletConnectWallet
 ];
 
-// Create connectors from the wallet list
+// Create connectors from the wallet list with proper parameters
 const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
-    wallets: wallets.map(wallet => wallet({
-      projectId: 'YOUR_PROJECT_ID',
-      chains: [mainnet],
+    wallets: wallets.map(wallet => wallet({ 
+      projectId, 
+      chains 
     }))
   }
 ]);
@@ -31,6 +38,7 @@ const connectors = connectorsForWallets([
 // Create the wagmi config
 const wagmiConfig = createConfig({
   connectors,
+  chains,
   transports: {
     [mainnet.id]: http()
   }
@@ -43,7 +51,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider chains={chains}>
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
