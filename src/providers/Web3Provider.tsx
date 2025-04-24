@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Get one from https://cloud.walletconnect.com
 const projectId = 'YOUR_PROJECT_ID';
 
-// Define chains
+// Define chains as an array for proper TypeScript typing
 const chains = [mainnet];
 
 // Create connectors for wallets
@@ -23,7 +23,7 @@ const connectors = connectorsForWallets([
     groupName: 'Recommended',
     wallets: [
       metaMaskWallet({ projectId }),
-      coinbaseWallet({ appName: 'My Web3 App', projectId }),
+      coinbaseWallet({ appName: 'My Web3 App' }),
       walletConnectWallet({ projectId })
     ],
   },
