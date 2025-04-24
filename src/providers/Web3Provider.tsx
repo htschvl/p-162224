@@ -1,33 +1,52 @@
 
 import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { RainbowKitProvider, connectorsForWallets } from '@rainbow-me/rainbowkit';
+import {
+  metaMaskWallet,
+  coinbaseWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets';
+import { WagmiConfig, createConfig, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const { chains, publicClient } = configureChains(
-  [mainnet],
-  [publicProvider()]
-);
+// Create a custom wallet list
+const wallets = [
+  metaMaskWallet,
+  coinbaseWallet,
+  walletConnectWallet
+];
 
-const { connectors } = getDefaultWallets({
-  appName: 'My Web3 App',
-  projectId: 'YOUR_PROJECT_ID',
-  chains,
-});
+// Create connectors from the wallet list
+const connectors = connectorsForWallets([
+  {
+    groupName: 'Recommended',
+    wallets: wallets.map(wallet => wallet({
+      projectId: 'YOUR_PROJECT_ID',
+      chains: [mainnet],
+    }))
+  }
+]);
 
+// Create the wagmi config
 const wagmiConfig = createConfig({
-  autoConnect: true,
   connectors,
-  publicClient,
+  transports: {
+    [mainnet.id]: http()
+  }
 });
+
+// Create a query client for RainbowKit
+const queryClient = new QueryClient();
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
-        {children}
-      </RainbowKitProvider>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
     </WagmiConfig>
   );
 }
