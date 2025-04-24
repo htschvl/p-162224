@@ -3,46 +3,44 @@ import * as React from "react";
 import {
   RainbowKitProvider,
   getDefaultWallets,
-  connectorsForWallets,
 } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { 
+  http, 
+  createConfig, 
+  WagmiProvider
+} from 'wagmi';
 import {
   mainnet,
   polygon,
   optimism,
   arbitrum,
 } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
 import '@rainbow-me/rainbowkit/styles.css';
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum],
-  [publicProvider()]
-);
-
-const projectId = 'YOUR_PROJECT_ID'; // You can use a default project ID for testing
+// Get project ID from WalletConnect Cloud - https://cloud.walletconnect.com/
+const projectId = 'YOUR_PROJECT_ID';
 
 const { wallets } = getDefaultWallets({
   appName: 'Web3 App',
   projectId,
-  chains,
 });
 
-const connectors = connectorsForWallets([...wallets]);
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
+const config = createConfig({
+  chains: [mainnet, polygon, optimism, arbitrum],
+  transports: {
+    [mainnet.id]: http(),
+    [polygon.id]: http(),
+    [optimism.id]: http(),
+    [arbitrum.id]: http(),
+  },
 });
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains}>
+    <WagmiProvider config={config}>
+      <RainbowKitProvider>
         {children}
       </RainbowKitProvider>
-    </WagmiConfig>
+    </WagmiProvider>
   );
 }

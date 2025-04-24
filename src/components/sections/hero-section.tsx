@@ -2,7 +2,7 @@
 import * as React from "react";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Input } from "@/components/ui/input";
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 export function HeroSection() {
