@@ -2,31 +2,35 @@
 import * as React from "react";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Input } from "@/components/ui/input";
+import { useAccount, useConnect } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 export function HeroSection() {
   const [inputValue, setInputValue] = React.useState("");
+  const { openConnectModal } = useConnectModal();
+  const { isConnected } = useAccount();
 
   const handleConnect = React.useCallback(() => {
-    // Handle connection logic
-    console.log("Connecting...");
-  }, []);
+    if (openConnectModal) {
+      openConnectModal();
+    }
+  }, [openConnectModal]);
 
   const handleRedeem = React.useCallback((e: React.FormEvent) => {
     e.preventDefault();
-    // Handle redemption logic
     console.log("Redeeming...", inputValue);
   }, [inputValue]);
 
   return (
-    <main className="font-bold text-center"> {/* Added text-center to ensure text centralization */}
+    <main className="font-bold text-center">
       <section className="bg-[rgba(19,20,21,1)] w-full flex flex-col pt-[17px] pb-[364px] max-md:max-w-full max-md:pb-[100px] relative">
         <div className="absolute top-5 right-5 text-center">
           <HeroButton 
             variant="connect" 
-            onClick={handleConnect} 
-            aria-label="Connect to service"
+            onClick={handleConnect}
+            aria-label="Connect to wallet"
           >
-            Conectar
+            {isConnected ? "Connected" : "Conectar"}
           </HeroButton>
         </div>
 
