@@ -1,17 +1,21 @@
 
 import * as React from "react";
 import { HeroButton } from "@/components/ui/hero-button";
+import { Input } from "@/components/ui/input";
 
 export function HeroSection() {
+  const [inputValue, setInputValue] = React.useState("");
+
   const handleConnect = React.useCallback(() => {
     // Handle connection logic
     console.log("Connecting...");
   }, []);
 
-  const handleRedeem = React.useCallback(() => {
+  const handleRedeem = React.useCallback((e: React.FormEvent) => {
+    e.preventDefault();
     // Handle redemption logic
-    console.log("Redeeming...");
-  }, []);
+    console.log("Redeeming...", inputValue);
+  }, [inputValue]);
 
   return (
     <main className="font-bold whitespace-nowrap">
@@ -34,11 +38,15 @@ export function HeroSection() {
           />
         </div>
 
-        <div className="flex justify-center mt-[47px]">
-          <form onSubmit={e => {
-            e.preventDefault();
-            handleRedeem();
-          }}>
+        <div className="flex flex-col items-center mt-[47px] space-y-4">
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Digite seu código"
+            className="w-[332px] h-[58px] text-lg rounded-[20px] bg-[rgba(35,35,36,1)] border-[rgba(228,228,228,1)] text-white placeholder-gray-400 focus:ring-2 focus:ring-[#00BF60]"
+          />
+
+          <form onSubmit={handleRedeem}>
             <HeroButton 
               variant="redeem" 
               type="submit" 
