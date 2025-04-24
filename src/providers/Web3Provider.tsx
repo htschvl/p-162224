@@ -17,28 +17,21 @@ const projectId = 'YOUR_PROJECT_ID';
 // Define chains
 const chains = [mainnet];
 
-// Create a custom wallet list
-const wallets = [
-  metaMaskWallet,
-  coinbaseWallet,
-  walletConnectWallet
-];
-
-// Create connectors from the wallet list with proper parameters
+// Create connectors for wallets
 const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
-    wallets: wallets.map(wallet => wallet({ 
-      projectId, 
-      chains 
-    }))
-  }
+    wallets: [
+      metaMaskWallet({ projectId, chains }),
+      coinbaseWallet({ projectId, chains }),
+      walletConnectWallet({ projectId, chains })
+    ],
+  },
 ]);
 
 // Create the wagmi config
 const wagmiConfig = createConfig({
   connectors,
-  chains,
   transports: {
     [mainnet.id]: http()
   }
