@@ -22,15 +22,16 @@ const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
     wallets: [
-      metaMaskWallet({ projectId, chains }),
-      coinbaseWallet({ projectId, chains }),
-      walletConnectWallet({ projectId, chains })
+      metaMaskWallet({ projectId }),
+      coinbaseWallet({ appName: 'My Web3 App', projectId }),
+      walletConnectWallet({ projectId })
     ],
   },
 ]);
 
 // Create the wagmi config
 const wagmiConfig = createConfig({
+  chains,
   connectors,
   transports: {
     [mainnet.id]: http()
@@ -44,7 +45,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider>
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
